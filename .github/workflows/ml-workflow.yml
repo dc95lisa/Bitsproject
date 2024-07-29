@@ -65,8 +65,11 @@ jobs:
         run: |
           mkdir -p model
           mv path/to/saved/model model/
-        # Save model for deployment or further steps
+        
+      - name: Upload Model Artifact
+        uses: actions/upload-artifact@v3
         with:
+          name: model-artifact
           path: model/
 
   deploy:
@@ -75,6 +78,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Download Model Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: model-artifact
+          path: model/
 
       - name: Deploy Model
         run: |
